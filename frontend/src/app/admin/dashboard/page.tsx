@@ -1,18 +1,90 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import apiClient from '@/services/api';
+import ParticipantList from '@/components/ParticipantList';
+import type { Participant, ParticipantListResponse } from '@/types';
 
 export default function AdminDashboardPage() {
   const router = useRouter();
+  const [participants, setParticipants] = useState<Participant[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [stats, setStats] = useState({
+    total: 0,
+    paid: 0,
+    unpaid: 0,
+  });
 
   useEffect(() => {
     // Check if user is authenticated
     if (!apiClient.isAuthenticated()) {
       router.push('/admin/login');
+      return;
     }
+
+    // Fetch participants on mount
+    fetchParticipants();
   }, [router]);
+
+  const fetchParticipants = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      const response = await apiClient.get<ParticipantListResponse>('/admin/participants');
+      
+      if (response.success && response.data) {
+        setParticipants(response.data.participants || []);
+        
+        // Calculate stats
+        const paid = response.data.participants.filter(p => p.payment_status === 'PAID').length;
+        const unpaid = response.data.participants.filter(p => p.payment_status === 'UNPAID').length;
+        
+        setStats({
+          total: response.data.total || 0,
+          paid,
+          unpaid,
+        });
+      }
+    } catch (err: any) {
+      console.error('Failed to fetch participants:', err);
+      setError(err.message || 'Failed to load participants');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handlePaymentUpdate = async (id: string, newStatus: 'PAID' | 'UNPAID') => {
+    try {
+      const response = await apiClient.patch(`/admin/participants/${id}/payment`, {
+        payment_status: newStatus,
+      });
+
+      if (response.success) {
+        // Update local state
+        setParticipants(prevParticipants =>
+          prevParticipants.map(p =>
+            p.id === id ? { ...p, payment_status: newStatus } : p
+          )
+        );
+
+        // Update stats
+        setStats(prevStats => {
+          const adjustment = newStatus === 'PAID' ? 1 : -1;
+          return {
+            ...prevStats,
+            paid: prevStats.paid + adjustment,
+            unpaid: prevStats.unpaid - adjustment,
+          };
+        });
+      }
+    } catch (err: any) {
+      console.error('Failed to update payment status:', err);
+      throw err; // Re-throw to trigger rollback in PaymentStatusToggle
+    }
+  };
 
   const handleLogout = () => {
     apiClient.clearToken();
@@ -45,24 +117,57 @@ export default function AdminDashboardPage() {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-        <div className="card max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
-            Welcome to Admin Dashboard
-          </h2>
-          <p className="text-gray-600 mb-6">
-            You are successfully authenticated! Participant management features will be added in Phase 5.
-          </p>
-
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-            <h3 className="font-semibold text-blue-900 mb-2">
-              ✅ Phase 4 Complete
+        {/* Statistics Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 className="text-sm font-medium text-gray-500 uppercase">
+              Total Participants
             </h3>
-            <p className="text-blue-800 text-sm">
-              Admin authentication is working. You can log in and access protected routes.
+            <p className="text-3xl font-bold text-gray-900 mt-2">{stats.total}</p>
+          </div>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 className="text-sm font-medium text-gray-500 uppercase">
+              Paid
+            </h3>
+            <p className="text-3xl font-bold text-green-600 mt-2">{stats.paid}</p>
+          </div>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 className="text-sm font-medium text-gray-500 uppercase">
+              Unpaid
+            </h3>
+            <p className="text-3xl font-bold text-orange-600 mt-2">{stats.unpaid}</p>
+          </div>
+        </div>
+
+        {/* Participant List */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h2 className="text-xl font-bold text-gray-800">
+              Participant List
+            </h2>
+            <p className="text-sm text-gray-600 mt-1">
+              Manage participant payment status
             </p>
-            <p className="text-blue-700 text-sm mt-3">
-              <strong>Next:</strong> Phase 5 will add participant list and payment status management.
-            </p>
+          </div>
+
+          {error && (
+            <div className="m-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-800 text-sm">{error}</p>
+              <button
+                onClick={fetchParticipants}
+                className="mt-2 text-sm text-red-600 hover:text-red-800 font-medium"
+              >
+                Try Again
+              </button>
+            </div>
+          )}
+
+          <div className="p-6">
+            <ParticipantList
+              participants={participants}
+              onPaymentUpdate={handlePaymentUpdate}
+              isLoading={isLoading}
+            />
           </div>
         </div>
       </div>

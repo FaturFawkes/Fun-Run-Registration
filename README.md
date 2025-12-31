@@ -2,23 +2,32 @@
 
 ![Tau-Tau Run](https://via.placeholder.com/800x200/FF6B35/FFFFFF?text=Tau-Tau+Run+5K)
 
-**A modern event registration system for Fun Run 5K events**
+**A modern, production-ready event registration system for Fun Run 5K events**
+
+[![Status](https://img.shields.io/badge/status-production%20ready-success)](https://github.com/your-org/tau-tau-run)
+[![Go Version](https://img.shields.io/badge/go-1.21+-blue)](https://golang.org)
+[![Node Version](https://img.shields.io/badge/node-18+-green)](https://nodejs.org)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 ## 🎯 Features
 
-- ✅ **Public Registration** - Participants can register online
-- ✅ **Admin Dashboard** - Manage participants and payment status
-- ✅ **Automated Emails** - Confirmation emails sent on payment
+- ✅ **Public Registration** - Participants can register online with real-time validation
+- ✅ **Admin Dashboard** - Manage participants and payment status with intuitive UI
+- ✅ **Automated Emails** - Confirmation emails automatically sent on payment
 - ✅ **State-Driven Workflow** - Explicit registration and payment states
-- ✅ **Secure Authentication** - JWT-based admin authentication with bcrypt
+- ✅ **Secure Authentication** - JWT-based admin authentication with bcrypt hashing
+- ✅ **Async Email Processing** - Non-blocking email sending for better performance
+- ✅ **Comprehensive Logging** - Full audit trail of all actions
+- ✅ **Mobile Responsive** - Works perfectly on all devices
 
 ## 🏗️ Architecture
 
 - **Backend**: Golang 1.21+ (Gin framework)
 - **Frontend**: Next.js 14+ (React, TypeScript, TailwindCSS)
 - **Database**: PostgreSQL 15+
-- **Email**: SMTP (net/smtp standard library)
+- **Email**: SMTP (net/smtp standard library, async goroutines)
 - **Deployment**: Docker + Docker Compose
+- **Authentication**: JWT with 24-hour expiration
 
 ## 🚀 Quick Start
 

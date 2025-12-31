@@ -140,7 +140,74 @@ psql -U postgres -d tau_tau_run   # Connect to database
 - ✅ **Phase 1-2:** Foundation complete
 - ✅ **Phase 3:** Public registration working
 - ✅ **Phase 4:** Admin authentication working
-- ⏳ **Phase 5:** Payment management (next)
+- ✅ **Phase 5:** Payment management working
+- ✅ **Phase 6:** Email automation working
+- ✅ **Phase 7:** Integration tested
+
+---
+
+## 📧 SMTP Configuration (Email Features)
+
+The system sends confirmation emails when payment status is updated to PAID. Configure SMTP to enable this feature:
+
+### Option 1: Gmail (Development/Testing)
+
+1. **Enable 2-Factor Authentication** on your Google account
+2. **Generate App Password**: https://myaccount.google.com/apppasswords
+3. **Update backend/.env**:
+   ```env
+   SMTP_HOST=smtp.gmail.com
+   SMTP_PORT=587
+   SMTP_USERNAME=your-email@gmail.com
+   SMTP_PASSWORD=your-16-char-app-password
+   SMTP_FROM_EMAIL=noreply@tautaurun.com
+   SMTP_FROM_NAME=Tau-Tau Run Team
+   ```
+
+### Option 2: Mailtrap (Development/Testing)
+
+Perfect for testing emails without sending to real addresses.
+
+1. **Sign up** at https://mailtrap.io (free tier available)
+2. **Get SMTP credentials** from your inbox
+3. **Update backend/.env**:
+   ```env
+   SMTP_HOST=smtp.mailtrap.io
+   SMTP_PORT=587
+   SMTP_USERNAME=your-mailtrap-username
+   SMTP_PASSWORD=your-mailtrap-password
+   SMTP_FROM_EMAIL=noreply@tautaurun.com
+   SMTP_FROM_NAME=Tau-Tau Run Team
+   ```
+
+### Option 3: SendGrid (Production)
+
+Recommended for production use.
+
+1. **Sign up** at https://sendgrid.com
+2. **Create API Key** in Settings → API Keys
+3. **Update backend/.env**:
+   ```env
+   SMTP_HOST=smtp.sendgrid.net
+   SMTP_PORT=587
+   SMTP_USERNAME=apikey
+   SMTP_PASSWORD=your-sendgrid-api-key
+   SMTP_FROM_EMAIL=noreply@tautaurun.com
+   SMTP_FROM_NAME=Tau-Tau Run Team
+   ```
+
+### Verify Email Configuration
+
+```bash
+# Restart backend after updating .env
+cd backend
+go run cmd/server/main.go
+
+# You should see:
+# [EMAIL] INFO: SMTP configuration validated: smtp.gmail.com:587
+```
+
+**Note:** Without SMTP configuration, the system will still work but emails will be logged as FAILED in the database.
 
 ---
 
@@ -150,8 +217,10 @@ psql -U postgres -d tau_tau_run   # Connect to database
 2. Fill out registration form and submit
 3. Go to http://localhost:3000/admin/login
 4. Login with admin@tautaurun.com / Admin123!
-5. You'll see the dashboard
+5. View participant list in dashboard
+6. Update payment status to PAID
+7. Check email inbox for confirmation email
 
 ---
 
-**Need help?** Check the main README.md or the specification files in `.specify/specs/001-event-registration-system/`
+**Need help?** Check the main README.md, [API Documentation](docs/API.md), or [Deployment Guide](docs/DEPLOYMENT.md)

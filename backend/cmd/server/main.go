@@ -32,10 +32,16 @@ func main() {
 	}
 	defer database.Close()
 
+	// Validate SMTP configuration (warning only, not fatal)
+	if err := services.ValidateSMTPConfig(cfg); err != nil {
+		utils.EmailLogger.Warning("SMTP not fully configured: %v - Email features will be disabled", err)
+	}
+
 	// Initialize services
 	authService := services.NewAuthService(cfg)
+	emailService := services.NewEmailService(cfg)
 	participantHandler := handlers.NewParticipantHandler()
-	adminHandler := handlers.NewAdminHandler(authService)
+	adminHandler := handlers.NewAdminHandler(authService, emailService)
 
 	// Setup Gin
 	if cfg.IsProduction() {

@@ -13,13 +13,15 @@ import (
 
 // AdminHandler handles admin-related requests
 type AdminHandler struct {
-	authService *services.AuthService
+	authService  *services.AuthService
+	emailService *services.EmailService
 }
 
 // NewAdminHandler creates a new admin handler
-func NewAdminHandler(authService *services.AuthService) *AdminHandler {
+func NewAdminHandler(authService *services.AuthService, emailService *services.EmailService) *AdminHandler {
 	return &AdminHandler{
-		authService: authService,
+		authService:  authService,
+		emailService: emailService,
 	}
 }
 
@@ -140,7 +142,7 @@ func (h *AdminHandler) UpdatePaymentStatus(c *gin.Context) {
 		return
 	}
 
-	// Store old status for email trigger logic (Phase 6)
+	// Store old status for email trigger logic
 	oldStatus := participant.PaymentStatus
 
 	// Update payment status
@@ -154,11 +156,16 @@ func (h *AdminHandler) UpdatePaymentStatus(c *gin.Context) {
 	utils.AuthLogger.Info("Admin %s updated participant %s payment status: %s → %s",
 		adminEmail, participant.Email, oldStatus, req.PaymentStatus)
 
-	// TODO: Phase 6 - Trigger email if UNPAID → PAID
+	// Trigger email if UNPAID → PAID (idempotency check)
 	emailSent := false
 	if oldStatus == "UNPAID" && req.PaymentStatus == "PAID" {
-		utils.EmailLogger.Info("Payment status changed to PAID for %s - email trigger will be implemented in Phase 6", participant.Email)
-		// emailSent = true (will be set when email service is called)
+		utils.EmailLogger.Info("Payment status changed to PAID for %s - triggering confirmation email", participant.Email)
+		
+		// Send email asynchronously (non-blocking)
+		h.emailService.SendConfirmationEmailAsync(participant)
+		emailSent = true
+	} else if oldStatus == "PAID" && req.PaymentStatus == "PAID" {
+		utils.EmailLogger.Info("Payment status already PAID for %s - skipping duplicate email", participant.Email)
 	}
 
 	// Return success response

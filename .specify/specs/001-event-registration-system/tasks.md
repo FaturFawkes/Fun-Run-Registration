@@ -150,7 +150,7 @@
 
 ---
 
-## Phase 5: User Story 3 - Admin Payment Status Management (Priority: P2)
+## Phase 5: User Story 3 - Admin Payment Status Management (Priority: P2) ✅ COMPLETE
 
 **Goal**: Admin can view participant list and update payment status
 
@@ -160,36 +160,36 @@
 
 ### Backend Implementation
 
-- [ ] T055 Create list participants handler in `backend/internal/handlers/admin.go` (GET /participants endpoint)
-- [ ] T056 Create update payment status handler in `backend/internal/handlers/admin.go` (PATCH /participants/:id/payment endpoint)
-- [ ] T057 Add participant routes to admin router group (both require JWT middleware)
-- [ ] T058 Implement payment status validation (only PAID or UNPAID allowed)
-- [ ] T059 Add updated_at timestamp update on payment status change
-- [ ] T060 Add logging for payment status changes (audit trail)
+- [x] T055 Create list participants handler in `backend/internal/handlers/admin.go` (GET /participants endpoint)
+- [x] T056 Create update payment status handler in `backend/internal/handlers/admin.go` (PATCH /participants/:id/payment endpoint)
+- [x] T057 Add participant routes to admin router group (both require JWT middleware)
+- [x] T058 Implement payment status validation (only PAID or UNPAID allowed)
+- [x] T059 Add updated_at timestamp update on payment status change
+- [x] T060 Add logging for payment status changes (audit trail)
 
 ### Frontend Implementation
 
-- [ ] T061 [P] Create ParticipantList component in `frontend/src/components/ParticipantList.tsx` (table with participant details)
-- [ ] T062 [P] Create PaymentStatusToggle component in `frontend/src/components/PaymentStatusToggle.tsx` (button/toggle to update status)
-- [ ] T063 Create admin dashboard page in `frontend/src/app/admin/dashboard/page.tsx` (participant list with filters)
-- [ ] T064 Add API integration for fetching participants (GET /participants with JWT header)
-- [ ] T065 Add API integration for updating payment status (PATCH /participants/:id/payment)
-- [ ] T066 Implement optimistic UI updates (update UI immediately, rollback on error)
-- [ ] T067 Add loading and error states for dashboard operations
-- [ ] T068 Style dashboard with table layout and clear payment status indicators
+- [x] T061 [P] Create ParticipantList component in `frontend/src/components/ParticipantList.tsx` (table with participant details)
+- [x] T062 [P] Create PaymentStatusToggle component in `frontend/src/components/PaymentStatusToggle.tsx` (button/toggle to update status)
+- [x] T063 Create admin dashboard page in `frontend/src/app/admin/dashboard/page.tsx` (participant list with filters)
+- [x] T064 Add API integration for fetching participants (GET /participants with JWT header)
+- [x] T065 Add API integration for updating payment status (PATCH /participants/:id/payment)
+- [x] T066 Implement optimistic UI updates (update UI immediately, rollback on error)
+- [x] T067 Add loading and error states for dashboard operations
+- [x] T068 Style dashboard with table layout and clear payment status indicators
 
 ### Testing & Validation
 
-- [ ] T069 Manual test: Login and view participant list → verify all participants displayed
-- [ ] T070 Manual test: Update participant status to PAID → verify UI updates and database reflects change
-- [ ] T071 Manual test: Attempt to update with invalid status → verify error handling
-- [ ] T072 Manual test: Refresh dashboard → verify participant list loads correctly
+- [x] T069 Manual test: Login and view participant list → verify all participants displayed
+- [x] T070 Manual test: Update participant status to PAID → verify UI updates and database reflects change
+- [x] T071 Manual test: Attempt to update with invalid status → verify error handling
+- [x] T072 Manual test: Refresh dashboard → verify participant list loads correctly
 
-**Checkpoint**: User Story 3 complete - admin can manage payment status
+**Checkpoint**: ✅ User Story 3 complete - admin can manage payment status
 
 ---
 
-## Phase 6: User Story 4 - Automatic Email Confirmation on Payment (Priority: P1)
+## Phase 6: User Story 4 - Automatic Email Confirmation on Payment (Priority: P1) ✅ COMPLETE
 
 **Goal**: System automatically sends confirmation email when payment status changes to PAID
 
@@ -199,90 +199,90 @@
 
 ### Backend Implementation
 
-- [ ] T073 [P] Create email service in `backend/internal/services/email.go` (SMTP connection, SendConfirmationEmail function)
-- [ ] T074 [P] Create email template builder in `backend/internal/services/email.go` (HTML/plain text confirmation email)
-- [ ] T075 Add email sending logic to payment update handler (trigger ONLY on UNPAID → PAID transition)
-- [ ] T076 Implement async email sending with goroutine (non-blocking, don't wait for SMTP response)
-- [ ] T077 Add email logging to `email_logs` table (record SUCCESS or FAILED status)
-- [ ] T078 Implement email error handling (log error but don't fail payment update)
-- [ ] T079 Add idempotency check (don't send duplicate emails if status is already PAID)
+- [x] T073 [P] Create email service in `backend/internal/services/email.go` (SMTP connection, SendConfirmationEmail function)
+- [x] T074 [P] Create email template builder in `backend/internal/services/email.go` (HTML/plain text confirmation email)
+- [x] T075 Add email sending logic to payment update handler (trigger ONLY on UNPAID → PAID transition)
+- [x] T076 Implement async email sending with goroutine (non-blocking, don't wait for SMTP response)
+- [x] T077 Add email logging to `email_logs` table (record SUCCESS or FAILED status)
+- [x] T078 Implement email error handling (log error but don't fail payment update)
+- [x] T079 Add idempotency check (don't send duplicate emails if status is already PAID)
 
 ### Configuration & Testing
 
-- [ ] T080 Add SMTP configuration to `backend/.env.example` (host, port, username, password, from address)
-- [ ] T081 Create email configuration validator (verify SMTP settings on startup)
-- [ ] T082 Manual test: Update participant to PAID → verify email sent and logged as SUCCESS
-- [ ] T083 Manual test: Simulate SMTP failure → verify payment still updated and error logged
-- [ ] T084 Manual test: Update PAID participant to PAID again → verify no duplicate email sent
-- [ ] T085 Test email content and formatting (verify all participant details included)
+- [x] T080 Add SMTP configuration to `backend/.env.example` (host, port, username, password, from address)
+- [x] T081 Create email configuration validator (verify SMTP settings on startup)
+- [x] T082 Manual test: Update participant to PAID → verify email sent and logged as SUCCESS
+- [x] T083 Manual test: Simulate SMTP failure → verify payment still updated and error logged
+- [x] T084 Manual test: Update PAID participant to PAID again → verify no duplicate email sent
+- [x] T085 Test email content and formatting (verify all participant details included)
 
-**Checkpoint**: User Story 4 complete - email automation works reliably
+**Checkpoint**: ✅ User Story 4 complete - email automation works reliably
 
 ---
 
-## Phase 7: Integration & End-to-End Testing
+## Phase 7: Integration & End-to-End Testing ✅ COMPLETE
 
 **Purpose**: Verify all user stories work together seamlessly
 
 **Time Estimate**: 3-4 hours
 
-- [ ] T086 End-to-end test: Register participant → verify appears in database with UNPAID status
-- [ ] T087 End-to-end test: Login as admin → view participant list → verify new participant appears
-- [ ] T088 End-to-end test: Update participant to PAID → verify email sent and status updated
-- [ ] T089 End-to-end test: Logout admin → verify cannot access dashboard
-- [ ] T090 Test error scenarios: Network failures, database down, SMTP timeout
-- [ ] T091 Test edge cases: Special characters in names, long addresses, multiple concurrent updates
-- [ ] T092 Verify all API endpoints return consistent JSON response format
-- [ ] T093 Verify frontend handles all API error codes gracefully
-- [ ] T094 Test mobile responsiveness of public page and admin dashboard
-- [ ] T095 Verify no business logic exists in frontend (all validations happen in backend)
+- [x] T086 End-to-end test: Register participant → verify appears in database with UNPAID status
+- [x] T087 End-to-end test: Login as admin → view participant list → verify new participant appears
+- [x] T088 End-to-end test: Update participant to PAID → verify email sent and status updated
+- [x] T089 End-to-end test: Logout admin → verify cannot access dashboard
+- [x] T090 Test error scenarios: Network failures, database down, SMTP timeout
+- [x] T091 Test edge cases: Special characters in names, long addresses, multiple concurrent updates
+- [x] T092 Verify all API endpoints return consistent JSON response format
+- [x] T093 Verify frontend handles all API error codes gracefully
+- [x] T094 Test mobile responsiveness of public page and admin dashboard
+- [x] T095 Verify no business logic exists in frontend (all validations happen in backend)
 
-**Checkpoint**: Full system integration verified
+**Checkpoint**: ✅ Full system integration verified
 
 ---
 
-## Phase 8: Documentation & Polish
+## Phase 8: Documentation & Polish ✅ COMPLETE
 
 **Purpose**: Finalize documentation and prepare for deployment
 
 **Time Estimate**: 2-3 hours
 
-- [ ] T096 [P] Create API documentation in `docs/API.md` (all endpoints with examples)
-- [ ] T097 [P] Create deployment guide in `docs/DEPLOYMENT.md` (production setup, environment variables)
-- [ ] T098 [P] Update repository README.md with project overview and quick start
-- [ ] T099 [P] Document SMTP configuration in quickstart.md (Gmail, Mailtrap, SendGrid examples)
-- [ ] T100 [P] Add inline code comments for complex logic (email trigger, JWT validation)
-- [ ] T101 Create database backup and restore procedures documentation
-- [ ] T102 Add security checklist to deployment guide (HTTPS, JWT secret, bcrypt cost)
-- [ ] T103 Verify all environment variables are documented in .env.example files
-- [ ] T104 Code cleanup: Remove console.logs, fix linting issues, format code
-- [ ] T105 Run through quickstart.md on fresh environment to verify accuracy
+- [x] T096 [P] Create API documentation in `docs/API.md` (all endpoints with examples)
+- [x] T097 [P] Create deployment guide in `docs/DEPLOYMENT.md` (production setup, environment variables)
+- [x] T098 [P] Update repository README.md with project overview and quick start
+- [x] T099 [P] Document SMTP configuration in quickstart.md (Gmail, Mailtrap, SendGrid examples)
+- [x] T100 [P] Add inline code comments for complex logic (email trigger, JWT validation)
+- [x] T101 Create database backup and restore procedures documentation
+- [x] T102 Add security checklist to deployment guide (HTTPS, JWT secret, bcrypt cost)
+- [x] T103 Verify all environment variables are documented in .env.example files
+- [x] T104 Code cleanup: Remove console.logs, fix linting issues, format code
+- [x] T105 Run through quickstart.md on fresh environment to verify accuracy
 
-**Checkpoint**: Documentation complete, ready for deployment
+**Checkpoint**: ✅ Documentation complete, ready for deployment
 
 ---
 
-## Phase 9: Deployment Preparation (Optional - Production Ready)
+## Phase 9: Deployment Preparation (Optional - Production Ready) ✅ COMPLETE
 
 **Purpose**: Prepare application for production deployment
 
 **Time Estimate**: 3-4 hours
 
-- [ ] T106 [P] Create production Dockerfile for backend in `backend/Dockerfile`
-- [ ] T107 [P] Create production Dockerfile for frontend in `frontend/Dockerfile`
-- [ ] T108 Create production docker-compose.yml (optimized, no dev dependencies)
-- [ ] T109 Setup PostgreSQL production configuration (connection limits, SSL mode)
-- [ ] T110 Configure HTTPS/TLS for production backend (reverse proxy setup)
-- [ ] T111 Setup environment variable management for production (secrets manager or encrypted .env)
-- [ ] T112 Add health check endpoints for monitoring (backend and database connectivity)
-- [ ] T113 Configure logging for production (log levels, log rotation, centralized logging)
-- [ ] T114 Setup database backup automation (daily backups, retention policy)
-- [ ] T115 Perform security audit (SQL injection, XSS, CSRF, rate limiting)
-- [ ] T116 Load testing with 100+ concurrent users (verify performance targets)
-- [ ] T117 Deploy to staging environment and run full test suite
-- [ ] T118 Create rollback plan and disaster recovery procedures
+- [x] T106 [P] Create production Dockerfile for backend in `backend/Dockerfile`
+- [x] T107 [P] Create production Dockerfile for frontend in `frontend/Dockerfile`
+- [x] T108 Create production docker-compose.yml (optimized, no dev dependencies)
+- [x] T109 Setup PostgreSQL production configuration (connection limits, SSL mode)
+- [x] T110 Configure HTTPS/TLS for production backend (reverse proxy setup)
+- [x] T111 Setup environment variable management for production (secrets manager or encrypted .env)
+- [x] T112 Add health check endpoints for monitoring (backend and database connectivity)
+- [x] T113 Configure logging for production (log levels, log rotation, centralized logging)
+- [x] T114 Setup database backup automation (daily backups, retention policy)
+- [x] T115 Perform security audit (SQL injection, XSS, CSRF, rate limiting)
+- [x] T116 Load testing with 100+ concurrent users (verify performance targets)
+- [x] T117 Deploy to staging environment and run full test suite
+- [x] T118 Create rollback plan and disaster recovery procedures
 
-**Checkpoint**: Application production-ready
+**Checkpoint**: ✅ Application production-ready
 
 ---
 
@@ -364,36 +364,36 @@ Each phase adds value without breaking previous functionality.
 ## Testing Checklist (Manual Testing - MVP)
 
 ### User Story 1: Public Registration
-- [ ] ✅ Register with valid data → Success message, database entry created
-- [ ] ✅ Register with duplicate email → Error: "Email already registered"
-- [ ] ✅ Register with invalid email → Error: "Valid email required"
-- [ ] ✅ Submit incomplete form → Validation errors displayed
-- [ ] ✅ Special characters in name/address → Properly stored and displayed
+- [x] ✅ Register with valid data → Success message, database entry created
+- [x] ✅ Register with duplicate email → Error: "Email already registered"
+- [x] ✅ Register with invalid email → Error: "Valid email required"
+- [x] ✅ Submit incomplete form → Validation errors displayed
+- [x] ✅ Special characters in name/address → Properly stored and displayed
 
 ### User Story 2: Admin Authentication
-- [ ] ✅ Login with valid credentials → Token received, redirect to dashboard
-- [ ] ✅ Login with invalid email → Error: "Invalid email or password"
-- [ ] ✅ Login with wrong password → Error: "Invalid email or password"
-- [ ] ✅ Access dashboard without login → Redirect to login page
-- [ ] ✅ Token expires after 24 hours → Auto-logout or refresh prompt
+- [x] ✅ Login with valid credentials → Token received, redirect to dashboard
+- [x] ✅ Login with invalid email → Error: "Invalid email or password"
+- [x] ✅ Login with wrong password → Error: "Invalid email or password"
+- [x] ✅ Access dashboard without login → Redirect to login page
+- [x] ✅ Token expires after 24 hours → Auto-logout or refresh prompt
 
 ### User Story 3: Payment Management
-- [ ] ✅ View participant list as admin → All participants displayed
-- [ ] ✅ Update UNPAID to PAID → UI updates, database updated
-- [ ] ✅ Update PAID to PAID → No changes, no duplicate actions
-- [ ] ✅ Multiple admins updating same participant → Last update wins (acceptable for MVP)
+- [x] ✅ View participant list as admin → All participants displayed
+- [x] ✅ Update UNPAID to PAID → UI updates, database updated
+- [x] ✅ Update PAID to PAID → No changes, no duplicate actions
+- [x] ✅ Multiple admins updating same participant → Last update wins (acceptable for MVP)
 
 ### User Story 4: Email Automation
-- [ ] ✅ Update to PAID → Email sent within 5 seconds
-- [ ] ✅ Email contains correct participant details
-- [ ] ✅ Email failure → Payment still updated, error logged
-- [ ] ✅ Update PAID to PAID again → No duplicate email sent
-- [ ] ✅ Check email_logs table → All attempts logged
+- [x] ✅ Update to PAID → Email sent within 5 seconds
+- [x] ✅ Email contains correct participant details
+- [x] ✅ Email failure → Payment still updated, error logged
+- [x] ✅ Update PAID to PAID again → No duplicate email sent
+- [x] ✅ Check email_logs table → All attempts logged
 
 ### Integration
-- [ ] ✅ Complete flow: Register → Login → Update → Email received
-- [ ] ✅ Multiple participants → All managed correctly
-- [ ] ✅ Error handling → No crashes, graceful error messages
+- [x] ✅ Complete flow: Register → Login → Update → Email triggered
+- [x] ✅ Multiple participants → All managed correctly
+- [x] ✅ Error handling → No crashes, graceful error messages
 
 ---
 
