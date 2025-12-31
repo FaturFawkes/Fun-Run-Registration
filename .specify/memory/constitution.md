@@ -1,50 +1,145 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# **Tau-Tau Run Registration System Constitution**
+
+<!-- Spec Constitution -->
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. MVP-First, Event-Driven Design
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+Setiap keputusan teknis harus mendukung **kecepatan rilis dan operasional event nyata**.
+Fitur hanya boleh ditambahkan jika:
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+* Mendukung langsung alur pendaftaran peserta
+* Mendukung operasional admin event
+* Mengurangi risiko kegagalan di hari-H
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+Tidak ada fitur spekulatif, tidak ada optimasi prematur, dan tidak ada generalisasi berlebihan.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+---
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### II. Backend as the Source of Truth
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+Backend (Golang + PostgreSQL) adalah **otoritas tunggal** untuk:
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+* Status pendaftaran
+* Status pembayaran
+* Trigger pengiriman email
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+Frontend dan dashboard admin **tidak boleh** menyimpan state bisnis kritikal di sisi klien.
+
+---
+
+### III. State-Driven Workflow (NON-NEGOTIABLE)
+
+Semua proses bisnis dikendalikan oleh **state eksplisit di database**.
+
+State utama:
+
+* `registration_status`: PENDING | CONFIRMED
+* `payment_status`: UNPAID | PAID
+
+Aturan:
+
+* Email konfirmasi **hanya** dikirim ketika `payment_status` berubah ke `PAID`
+* Tidak ada email manual di luar sistem
+* Tidak ada implicit behavior
+
+---
+
+### IV. Simple Admin, Secure by Default
+
+Admin dashboard:
+
+* Single admin role
+* Autentikasi sederhana (email + password)
+* Password **wajib hashed (bcrypt)**
+* Akses admin **terisolasi dari public site**
+
+Keamanan dasar tidak boleh dikompromikan demi kecepatan.
+
+---
+
+### V. Design Consistency & Color Discipline
+
+UI harus:
+
+* Menggunakan **color palette resmi** proyek
+* Menghindari gradient, glassmorphism, dan efek berlebihan
+* Flat, poster-like, modern, dan readable
+
+Desain bertujuan **mendukung event**, bukan mendominasi konten.
+
+---
+
+## Technical Constraints
+
+* **Backend:** Golang (REST API)
+* **Database:** PostgreSQL (relational, strongly typed)
+* **Frontend:** Next JS AI (public page + admin dashboard)
+* **Email:** SMTP (manual configuration)
+* **Architecture:** Monolith MVP (NO microservices)
+* **Deployment:** Single environment (production-first)
+
+Larangan eksplisit:
+
+* Tidak menggunakan NoSQL
+* Tidak menggunakan message queue
+* Tidak menggunakan external email SaaS API
+* Tidak menggunakan frontend state management kompleks
+
+---
+
+## Development Workflow
+
+1. **Define State First**
+
+   * Tentukan field & enum di PostgreSQL
+   * Tentukan kapan state berubah
+
+2. **Design API Contract**
+
+   * Endpoint jelas
+   * Request/response eksplisit
+   * Error handling konsisten
+
+3. **Implement Backend**
+
+   * Validasi input
+   * Logging minimal tapi bermakna
+
+4. **Integrate Frontend (Next JS React)**
+
+   * Frontend mengikuti API, bukan sebaliknya
+   * Tidak ada business logic di UI
+
+5. **Manual Test Flow**
+
+   * Register user
+   * Login admin
+   * Update payment
+   * Verify email terkirim
+
+Tidak ada deployment sebelum flow end-to-end berhasil.
+
+---
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+* Constitution ini **mengalahkan** keputusan teknis ad-hoc
+* Setiap penambahan kompleksitas harus:
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+  * Dijustifikasi secara tertulis
+  * Disetujui oleh owner proyek
+* Jika melanggar prinsip MVP atau State-Driven Workflow → **harus direvisi**
+
+Dokumen ini adalah referensi utama untuk:
+
+* System design
+* Review fitur
+* Diskusi teknis
+
+---
+
+**Version**: 1.0.0
+**Ratified**: 2026-01-01
+**Last Amended**: 2026-01-01

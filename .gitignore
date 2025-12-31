@@ -1,0 +1,51 @@
+# Backend (Go)
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+/backend/bin/
+/backend/tmp/
+vendor/
+
+# Frontend (Node/Next.js)
+/frontend/node_modules/
+/frontend/.next/
+/frontend/out/
+/frontend/build/
+/frontend/.vercel
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+/tmp/
+/temp/
