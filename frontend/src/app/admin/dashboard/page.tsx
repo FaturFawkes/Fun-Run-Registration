@@ -36,11 +36,12 @@ export default function AdminDashboardPage() {
       const response = await apiClient.get<ParticipantListResponse>('/admin/participants');
       
       if (response.success && response.data) {
-        setParticipants(response.data.participants || []);
+        const participantsList = response.data.participants || [];
+        setParticipants(participantsList);
         
         // Calculate stats
-        const paid = response.data.participants.filter(p => p.payment_status === 'PAID').length;
-        const unpaid = response.data.participants.filter(p => p.payment_status === 'UNPAID').length;
+        const paid = participantsList.filter(p => p.payment_status === 'PAID').length;
+        const unpaid = participantsList.filter(p => p.payment_status === 'UNPAID').length;
         
         setStats({
           total: response.data.total || 0,
