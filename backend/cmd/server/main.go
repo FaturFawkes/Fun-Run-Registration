@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tau-tau-run/backend/config"
 	"github.com/tau-tau-run/backend/internal/database"
+	"github.com/tau-tau-run/backend/internal/handlers"
 	"github.com/tau-tau-run/backend/internal/middleware"
 	"github.com/tau-tau-run/backend/internal/services"
 	"github.com/tau-tau-run/backend/internal/utils"
@@ -33,6 +34,7 @@ func main() {
 
 	// Initialize services
 	authService := services.NewAuthService(cfg)
+	participantHandler := handlers.NewParticipantHandler()
 
 	// Setup Gin
 	if cfg.IsProduction() {
@@ -72,7 +74,9 @@ func main() {
 					"version": "1.0.0",
 				})
 			})
-			// POST /register will be added in Phase 3
+			
+			// Registration endpoint
+			public.POST("/register", participantHandler.Register)
 		}
 
 		// Admin routes

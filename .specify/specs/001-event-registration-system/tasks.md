@@ -78,7 +78,7 @@
 
 ---
 
-## Phase 3: User Story 1 - Public Participant Registration (Priority: P1) 🎯 MVP
+## Phase 3: User Story 1 - Public Participant Registration (Priority: P1) 🎯 MVP ✅ COMPLETE
 
 **Goal**: Allow visitors to register for the event via public landing page
 
@@ -88,31 +88,31 @@
 
 ### Backend Implementation
 
-- [ ] T025 [P] Create Participant model in `backend/internal/models/participant.go` (struct, validation, CRUD methods)
-- [ ] T026 [P] Create validation utility in `backend/internal/utils/validator.go` (email format, phone format, required fields)
-- [ ] T027 Create participant registration handler in `backend/internal/handlers/participant.go` (POST /register endpoint)
-- [ ] T028 Add participant routes to main server in `backend/cmd/server/main.go` (public router group)
-- [ ] T029 Implement duplicate email check in participant handler
-- [ ] T030 Add input sanitization to prevent SQL injection
-- [ ] T031 Add structured logging for registration events
+- [x] T025 [P] Create Participant model in `backend/internal/models/participant.go` (struct, validation, CRUD methods)
+- [x] T026 [P] Create validation utility in `backend/internal/utils/validator.go` (email format, phone format, required fields)
+- [x] T027 Create participant registration handler in `backend/internal/handlers/participant.go` (POST /register endpoint)
+- [x] T028 Add participant routes to main server in `backend/cmd/server/main.go` (public router group)
+- [x] T029 Implement duplicate email check in participant handler
+- [x] T030 Add input sanitization to prevent SQL injection
+- [x] T031 Add structured logging for registration events
 
 ### Frontend Implementation
 
-- [ ] T032 [P] Create RegistrationForm component in `frontend/src/components/RegistrationForm.tsx` (form fields, validation, submission)
-- [ ] T033 [P] Create form validation logic with client-side hints (email format, required fields, character limits)
-- [ ] T034 Create public landing page in `frontend/src/app/page.tsx` (event info, registration form, success/error messages)
-- [ ] T035 Add API integration to RegistrationForm (call POST /register, handle responses)
-- [ ] T036 Style landing page with TailwindCSS (poster-like, flat design per constitution)
-- [ ] T037 Add loading states and error handling to registration form
+- [x] T032 [P] Create RegistrationForm component in `frontend/src/components/RegistrationForm.tsx` (form fields, validation, submission)
+- [x] T033 [P] Create form validation logic with client-side hints (email format, required fields, character limits)
+- [x] T034 Create public landing page in `frontend/src/app/page.tsx` (event info, registration form, success/error messages)
+- [x] T035 Add API integration to RegistrationForm (call POST /register, handle responses)
+- [x] T036 Style landing page with TailwindCSS (poster-like, flat design per constitution)
+- [x] T037 Add loading states and error handling to registration form
 
 ### Testing & Validation
 
-- [ ] T038 Manual test: Register participant with valid data → verify 201 response and database entry
-- [ ] T039 Manual test: Register with duplicate email → verify 409 error
-- [ ] T040 Manual test: Register with invalid email → verify 400 validation error
-- [ ] T041 Manual test: Submit incomplete form → verify validation errors displayed
+- [x] T038 Manual test: Register participant with valid data → verify 201 response and database entry
+- [x] T039 Manual test: Register with duplicate email → verify 409 error
+- [x] T040 Manual test: Register with invalid email → verify 400 validation error
+- [x] T041 Manual test: Submit incomplete form → verify validation errors displayed
 
-**Checkpoint**: User Story 1 complete - public registration fully functional and tested
+**Checkpoint**: ✅ User Story 1 complete - public registration fully functional and tested
 
 ---
 
