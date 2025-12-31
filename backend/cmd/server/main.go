@@ -35,6 +35,7 @@ func main() {
 	// Initialize services
 	authService := services.NewAuthService(cfg)
 	participantHandler := handlers.NewParticipantHandler()
+	adminHandler := handlers.NewAdminHandler(authService)
 
 	// Setup Gin
 	if cfg.IsProduction() {
@@ -83,14 +84,17 @@ func main() {
 		admin := v1.Group("/admin")
 		{
 			// POST /login (no auth required)
-			// Will be added in Phase 4
+			admin.POST("/login", adminHandler.Login)
 			
 			// Protected admin routes
 			protected := admin.Group("")
 			protected.Use(middleware.AuthMiddleware(authService))
 			{
-				// GET /participants will be added in Phase 5
-				// PATCH /participants/:id/payment will be added in Phase 5
+				// GET /participants
+				protected.GET("/participants", adminHandler.GetParticipants)
+				
+				// PATCH /participants/:id/payment
+				protected.PATCH("/participants/:id/payment", adminHandler.UpdatePaymentStatus)
 			}
 		}
 	}
